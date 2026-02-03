@@ -6,141 +6,170 @@
 <title>FATIMA ❤️</title>
 
 <style>
-body{
-  margin:0;
-  padding:0;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  align-items:center;
-  background:#ffe6ec;
-  font-family:Arial, sans-serif;
-  overflow:hidden;
-  text-align:center;
-  position:relative;
+/* Body & Background */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  background: #ffe6ec;
 }
 
-h1{
-  font-size:32px;
-  color:#d6004a;
-  margin:20px;
+/* Falling flowers (animated) */
+.flower {
+  position: absolute;
+  top: -50px;
+  font-size: 20px;
+  animation: fall linear infinite;
+  pointer-events: none;
+}
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(360deg); }
 }
 
-#name{
-  font-weight:bold;
+/* Blinking hearts */
+.heart {
+  position: absolute;
+  font-size: 18px;
+  animation: blink 1s infinite alternate;
+  pointer-events: none;
+}
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
+
+/* Heading */
+h1 {
+  font-size: 28px;
+  color: #d6004a;
+  margin: 20px;
+}
+#name {
+  font-weight: bold;
   background: linear-gradient(45deg, red, purple, blue);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-button{
-  padding:14px 25px;
-  font-size:18px;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  margin:10px 5px 10px 5px;
-  z-index: 1;
+/* Buttons */
+button {
+  padding: 14px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 10px 5px;
+  z-index: 2;
+  position: relative;
 }
 
-#yesBtn{
-  background:#ff2f6d;
-  color:white;
-  position:absolute;
-  left:20px;
-  top:120px;
+#buttonsContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
 
-#changeNameBtn{
-  background:#6a0dad;
-  color:white;
-  position:absolute;
-  top:120px;
-  right:20px;
+#yesBtn { background: #ff2f6d; color: white; }
+#noBtn { background: #444; color: white; position: absolute; z-index: 1; }
+#changeNameBtn { background: #6a0dad; color: white; margin-top: 60px; }
+
+#footer {
+  position: absolute;
+  bottom: 15px;
+  font-size: 16px;
+  color: #111;
+  font-weight: bold;
 }
 
-#noBtn{
-  background:#444;
-  color:white;
-  position:absolute;
-  top:220px;
-  left:calc(50% - 50px);
-  z-index: 0;
+/* Cartoon GIFs for YES click */
+#cartoons {
+  margin-top: 20px;
 }
-
-#footer{
-  position:absolute;
-  bottom:15px;
-  font-size:16px;
-  color:#111;
-  font-weight:bold;
+#cartoons img {
+  width: 80px;
+  height: 80px;
+  margin: 0 10px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Will you be my Valentine <span id="name">FATIMA</span>? ❤️</h1>
+<h1>WILL YOU BE MY VALENTINE <span id="name">FATIMA</span>?</h1>
 
-<button id="yesBtn" onclick="yesClicked()">YES</button>
-<button id="changeNameBtn" onclick="changeName()">Change Name</button>
+<div id="buttonsContainer">
+  <button id="yesBtn" onclick="yesClicked()">YES</button>
+  <button id="changeNameBtn" onclick="changeName()">CHANGE NAME</button>
+</div>
+
 <button id="noBtn" onclick="moveNo()">NO</button>
+
+<div id="cartoons"></div>
 
 <div id="footer">Created by Gulraiz</div>
 
 <script>
-let texts = [
-  "Are you sure?",
-  "Think again",
-  "Think carefully",
-  "Banjao",
-  "You are mine",
-  "YES"
-];
+// ====== Flower animation ======
+const flowerChars = ['🌸','🌺','🌼','💮','🌹'];
+function createFlower() {
+  const f = document.createElement('div');
+  f.className = 'flower';
+  f.style.left = Math.random() * window.innerWidth + 'px';
+  f.style.fontSize = (15 + Math.random() * 25) + 'px';
+  f.innerText = flowerChars[Math.floor(Math.random()*flowerChars.length)];
+  f.style.animationDuration = (5 + Math.random()*5) + 's';
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),10000);
+}
+setInterval(createFlower, 300);
 
-let index = 0;
+// ====== Blinking hearts ======
+const heartChars = ['💖','💗','❤️','💘'];
+function createHeart() {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.style.left = Math.random() * window.innerWidth + 'px';
+  h.style.top = Math.random() * window.innerHeight + 'px';
+  h.innerText = heartChars[Math.floor(Math.random()*heartChars.length)];
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),2000);
+}
+setInterval(createHeart, 500);
+
+// ====== NO button logic ======
+let noTexts = ["THINK AGAIN","ARE YOU SURE","THINK CAREFULL","DON'T BE SHY","LAST CHANCE HAI","YES"];
+let noIndex = 0;
 
 function moveNo(){
   const btn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
   const changeBtn = document.getElementById("changeNameBtn");
   const footer = document.getElementById("footer");
+  const btnWidth = btn.offsetWidth;
+  const btnHeight = btn.offsetHeight;
 
-  const btnWidth = 100;
-  const btnHeight = 50;
-
-  // get bounding rects
   const yesRect = yesBtn.getBoundingClientRect();
   const changeRect = changeBtn.getBoundingClientRect();
   const footerRect = footer.getBoundingClientRect();
 
   let maxAttempts = 100;
   let x, y;
-
   for(let i=0;i<maxAttempts;i++){
-    x = Math.random() * (window.innerWidth - btnWidth);
-    y = Math.random() * (window.innerHeight - btnHeight);
+    x = Math.random()*(window.innerWidth - btnWidth);
+    y = Math.random()*(window.innerHeight - btnHeight);
 
     let overlap = false;
 
-    // check YES overlap
-    if(x + btnWidth > yesRect.left && x < yesRect.right &&
-       y + btnHeight > yesRect.top && y < yesRect.bottom){
-      overlap = true;
-    }
-
-    // check CHANGE NAME overlap
-    if(x + btnWidth > changeRect.left && x < changeRect.right &&
-       y + btnHeight > changeRect.top && y < changeRect.bottom){
-      overlap = true;
-    }
-
-    // check FOOTER overlap
-    if(x + btnWidth > footerRect.left && x < footerRect.right &&
-       y + btnHeight > footerRect.top && y < footerRect.bottom){
-      overlap = true;
-    }
+    [yesRect, changeRect, footerRect].forEach(rect=>{
+      if(x + btnWidth > rect.left && x < rect.right &&
+         y + btnHeight > rect.top && y < rect.bottom){
+        overlap = true;
+      }
+    });
 
     if(!overlap) break;
   }
@@ -148,22 +177,27 @@ function moveNo(){
   btn.style.left = x + "px";
   btn.style.top = y + "px";
 
-  // change text
-  btn.innerText = texts[index];
-  index++;
-  if(index >= texts.length) index = texts.length -1;
+  btn.innerText = noTexts[noIndex];
+  noIndex++;
+  if(noIndex>=noTexts.length) noIndex=noTexts.length-1;
 }
 
-// YES click
+// ====== YES click ======
 function yesClicked(){
-  document.body.innerHTML =
-    "<h1 style='color:#d6004a; font-size:32px'>❤️ I knew you wanted to say YES ❤️</h1><div id='footer' style='color:#111; font-weight:bold; font-size:16px'>Created by Gulraiz</div>";
+  document.body.innerHTML = `
+    <h1 style="color:#d6004a; font-size:32px">I KNEW YOU WANTED THIS ❤️</h1>
+    <div id="cartoons">
+      <img src="https://i.ibb.co/0j0m1ZR/cartoon1.png">
+      <img src="https://i.ibb.co/9vMQcZC/cartoon2.png">
+    </div>
+    <div id="footer" style="color:#111; font-weight:bold; font-size:16px">Created by Gulraiz</div>
+  `;
 }
 
-// Change name click
+// ====== Change name ======
 function changeName(){
   let newName = prompt("Enter your Valentine’s name:");
-  if(newName && newName.trim() !== ""){
+  if(newName && newName.trim()!==""){
     document.getElementById("name").innerText = newName.trim();
   }
 }
