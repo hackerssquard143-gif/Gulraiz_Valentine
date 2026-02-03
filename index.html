@@ -74,18 +74,31 @@ const resultContainer=document.getElementById('resultContainer');
 let noTexts=["THINK AGAIN","ARE YOU SURE","THINK CAREFULL","DON'T BE SHY","LAST CHANCE HAI","YES"];
 let noIndex=0;
 
+/* Function to get URL param */
+function getNameFromURL(){
+  const params=new URLSearchParams(window.location.search);
+  const name=params.get('name');
+  return name?name.toUpperCase():'FATIMA';
+}
+
+/* Update URL param without reload */
+function updateURL(name){
+  const url=new URL(window.location);
+  url.searchParams.set('name',name);
+  window.history.replaceState({},'',url);
+}
+
+/* Set initial name from URL */
+nameSpan.textContent=getNameFromURL();
+
 /* floating background objects */
 function createFloating(type,count){
   for(let i=0;i<count;i++){
     const el=document.createElement('div');
     el.classList.add('floating');
-    if(type==='flower'){
-      el.innerHTML='🌸';
-    }else if(type==='heart'){
-      el.innerHTML='❤️';
-    }else if(type==='snow'){
-      el.innerHTML='❄️';
-    }
+    if(type==='flower'){ el.innerHTML='🌸'; }
+    else if(type==='heart'){ el.innerHTML='❤️'; }
+    else if(type==='snow'){ el.innerHTML='❄️'; }
     el.style.left=Math.random()*100+'vw';
     el.style.top=Math.random()*100+'vh';
     el.style.fontSize=(Math.random()*14+10)+'px';
@@ -180,7 +193,11 @@ function yesClicked(){
 /* Change name */
 function changeName(){
   const val=prompt("Enter your Valentine's name:");
-  if(val && val.trim()!=="") nameSpan.textContent=val.trim().toUpperCase();
+  if(val && val.trim()!==""){
+    const newName=val.trim().toUpperCase();
+    nameSpan.textContent=newName;
+    updateURL(newName);
+  }
 }
 
 /* Events */
