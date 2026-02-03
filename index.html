@@ -6,7 +6,6 @@
 <title>FATIMA ❤️</title>
 
 <style>
-/* Body & Background */
 body {
   margin: 0;
   padding: 0;
@@ -18,35 +17,11 @@ body {
   background: #ffe6ec;
 }
 
-/* Falling flowers (animated) */
-.flower {
-  position: absolute;
-  top: -50px;
-  font-size: 20px;
-  animation: fall linear infinite;
-  pointer-events: none;
-}
-@keyframes fall {
-  to { transform: translateY(110vh) rotate(360deg); }
-}
-
-/* Blinking hearts */
-.heart {
-  position: absolute;
-  font-size: 18px;
-  animation: blink 1s infinite alternate;
-  pointer-events: none;
-}
-@keyframes blink {
-  from { opacity: 1; }
-  to { opacity: 0.3; }
-}
-
 /* Heading */
 h1 {
   font-size: 28px;
   color: #d6004a;
-  margin: 20px;
+  margin-top: 40px;
 }
 #name {
   font-weight: bold;
@@ -55,22 +30,22 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
-/* Buttons */
+/* Buttons layout */
+#buttonsRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+}
+
 button {
   padding: 14px 25px;
   font-size: 18px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  margin: 10px 5px;
   z-index: 2;
   position: relative;
-}
-
-#buttonsContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
 }
 
 #yesBtn { background: #ff2f6d; color: white; }
@@ -80,67 +55,29 @@ button {
 #footer {
   position: absolute;
   bottom: 15px;
+  width: 100%;
   font-size: 16px;
   color: #111;
-  font-weight: bold;
-}
-
-/* Cartoon GIFs for YES click */
-#cartoons {
-  margin-top: 20px;
-}
-#cartoons img {
-  width: 80px;
-  height: 80px;
-  margin: 0 10px;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<h1>WILL YOU BE MY VALENTINE <span id="name">FATIMA</span>?</h1>
+<h1>WILL YOU BE MY VALENTINE <span id="name">FATIMA</span> ?</h1>
 
-<div id="buttonsContainer">
+<div id="buttonsRow">
   <button id="yesBtn" onclick="yesClicked()">YES</button>
-  <button id="changeNameBtn" onclick="changeName()">CHANGE NAME</button>
+  <button id="noBtn" onclick="moveNo()">NO</button>
 </div>
 
-<button id="noBtn" onclick="moveNo()">NO</button>
-
-<div id="cartoons"></div>
+<button id="changeNameBtn" onclick="changeName()">CHANGE NAME</button>
 
 <div id="footer">Created by Gulraiz</div>
 
 <script>
-// ====== Flower animation ======
-const flowerChars = ['🌸','🌺','🌼','💮','🌹'];
-function createFlower() {
-  const f = document.createElement('div');
-  f.className = 'flower';
-  f.style.left = Math.random() * window.innerWidth + 'px';
-  f.style.fontSize = (15 + Math.random() * 25) + 'px';
-  f.innerText = flowerChars[Math.floor(Math.random()*flowerChars.length)];
-  f.style.animationDuration = (5 + Math.random()*5) + 's';
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),10000);
-}
-setInterval(createFlower, 300);
-
-// ====== Blinking hearts ======
-const heartChars = ['💖','💗','❤️','💘'];
-function createHeart() {
-  const h = document.createElement('div');
-  h.className = 'heart';
-  h.style.left = Math.random() * window.innerWidth + 'px';
-  h.style.top = Math.random() * window.innerHeight + 'px';
-  h.innerText = heartChars[Math.floor(Math.random()*heartChars.length)];
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),2000);
-}
-setInterval(createHeart, 500);
-
-// ====== NO button logic ======
+// NO button logic
 let noTexts = ["THINK AGAIN","ARE YOU SURE","THINK CAREFULL","DON'T BE SHY","LAST CHANCE HAI","YES"];
 let noIndex = 0;
 
@@ -182,19 +119,15 @@ function moveNo(){
   if(noIndex>=noTexts.length) noIndex=noTexts.length-1;
 }
 
-// ====== YES click ======
+// YES click
 function yesClicked(){
   document.body.innerHTML = `
-    <h1 style="color:#d6004a; font-size:32px">I KNEW YOU WANTED THIS ❤️</h1>
-    <div id="cartoons">
-      <img src="https://i.ibb.co/0j0m1ZR/cartoon1.png">
-      <img src="https://i.ibb.co/9vMQcZC/cartoon2.png">
-    </div>
-    <div id="footer" style="color:#111; font-weight:bold; font-size:16px">Created by Gulraiz</div>
+    <h1 style="color:#d6004a; font-size:32px; margin-top:40px">I KNEW YOU WANTED THIS ❤️</h1>
+    <div id="footer" style="color:#111; font-weight:bold; font-size:16px; text-align:center;">Created by Gulraiz</div>
   `;
 }
 
-// ====== Change name ======
+// Change Name click
 function changeName(){
   let newName = prompt("Enter your Valentine’s name:");
   if(newName && newName.trim()!==""){
