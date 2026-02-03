@@ -40,42 +40,40 @@ button{
   border:none;
   border-radius:12px;
   cursor:pointer;
-  margin:10px 5px;
-  z-index: 1; /* ensure visible */
-}
-
-#buttonsContainer{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:15px;
+  margin:10px 5px 10px 5px;
   z-index: 1;
-  position: relative;
 }
 
 #yesBtn{
   background:#ff2f6d;
   color:white;
+  position:absolute;
+  left:20px;
+  top:120px;
+}
+
+#changeNameBtn{
+  background:#6a0dad;
+  color:white;
+  position:absolute;
+  top:120px;
+  right:20px;
 }
 
 #noBtn{
   background:#444;
   color:white;
   position:absolute;
-  z-index: 0; /* NO button behind other buttons so visible */
-}
-
-#changeNameBtn{
-  background:#6a0dad;
-  color:white;
-  margin-top:60px; /* thoda neeche shift */
+  top:220px;
+  left:calc(50% - 50px);
+  z-index: 0;
 }
 
 #footer{
   position:absolute;
   bottom:15px;
   font-size:16px;
-  color:#111; /* dark black */
+  color:#111;
   font-weight:bold;
 }
 </style>
@@ -85,11 +83,8 @@ button{
 
 <h1>Will you be my Valentine <span id="name">FATIMA</span>? ❤️</h1>
 
-<div id="buttonsContainer">
-  <button id="yesBtn" onclick="yesClicked()">YES</button>
-  <button id="changeNameBtn" onclick="changeName()">Change Name</button>
-</div>
-
+<button id="yesBtn" onclick="yesClicked()">YES</button>
+<button id="changeNameBtn" onclick="changeName()">Change Name</button>
 <button id="noBtn" onclick="moveNo()">NO</button>
 
 <div id="footer">Created by Gulraiz</div>
@@ -115,32 +110,33 @@ function moveNo(){
   const btnWidth = 100;
   const btnHeight = 50;
 
-  // Get restricted area
+  // get bounding rects
   const yesRect = yesBtn.getBoundingClientRect();
   const changeRect = changeBtn.getBoundingClientRect();
   const footerRect = footer.getBoundingClientRect();
 
-  let maxAttempts = 100; // avoid infinite loop
+  let maxAttempts = 100;
   let x, y;
+
   for(let i=0;i<maxAttempts;i++){
     x = Math.random() * (window.innerWidth - btnWidth);
     y = Math.random() * (window.innerHeight - btnHeight);
 
     let overlap = false;
 
-    // Check YES overlap
+    // check YES overlap
     if(x + btnWidth > yesRect.left && x < yesRect.right &&
        y + btnHeight > yesRect.top && y < yesRect.bottom){
       overlap = true;
     }
 
-    // Check CHANGE NAME overlap
+    // check CHANGE NAME overlap
     if(x + btnWidth > changeRect.left && x < changeRect.right &&
        y + btnHeight > changeRect.top && y < changeRect.bottom){
       overlap = true;
     }
 
-    // Check FOOTER overlap
+    // check FOOTER overlap
     if(x + btnWidth > footerRect.left && x < footerRect.right &&
        y + btnHeight > footerRect.top && y < footerRect.bottom){
       overlap = true;
@@ -152,21 +148,19 @@ function moveNo(){
   btn.style.left = x + "px";
   btn.style.top = y + "px";
 
-  // Change text sequence
+  // change text
   btn.innerText = texts[index];
   index++;
-  if(index >= texts.length){
-    index = texts.length - 1;
-  }
+  if(index >= texts.length) index = texts.length -1;
 }
 
-// YES button click
+// YES click
 function yesClicked(){
   document.body.innerHTML =
     "<h1 style='color:#d6004a; font-size:32px'>❤️ I knew you wanted to say YES ❤️</h1><div id='footer' style='color:#111; font-weight:bold; font-size:16px'>Created by Gulraiz</div>";
 }
 
-// Change name button click
+// Change name click
 function changeName(){
   let newName = prompt("Enter your Valentine’s name:");
   if(newName && newName.trim() !== ""){
