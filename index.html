@@ -5,309 +5,198 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>FATIMA ❤️</title>
 <style>
-  :root{
-    --bg1:#fff0f4;
-    --accent:#d6004a;
-    --btn-yes:#ff2f6d;
-    --btn-no:#444;
-    --btn-change:#6a0dad;
-    --footer:#111;
-  }
+:root{
+  --bg1:#fff0f4;
+  --accent:#d6004a;
+  --btn-yes:#ff2f6d;
+  --btn-no:#444;
+  --btn-change:#6a0dad;
+  --footer:#111;
+}
+html,body{margin:0;padding:0;height:100%;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+body{background:linear-gradient(180deg,var(--bg1),#ffe6ec);-webkit-text-size-adjust:100%}
 
-  /* Basic layout */
-  html,body{height:100%;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,var(--bg1),#ffe6ec);overflow:hidden}
-  .wrap{position:relative;height:100vh;max-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding-top:36px;box-sizing:border-box}
+.wrap{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:34px;box-sizing:border-box;text-align:center;overflow:hidden}
 
-  /* Heading */
-  h1{font-size:20px;line-height:1.15;color:var(--accent);margin:6px 12px}
-  #titleTop{font-weight:700;letter-spacing:1px;text-transform:uppercase}
-  #name{display:block;font-size:28px;font-weight:900;margin-top:6px;background:linear-gradient(45deg,#ff3366,#9b30ff,#4aa0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#titleTop{font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin:6px 12px;font-size:18px}
+#name{display:block;font-size:26px;font-weight:900;margin-top:6px;background:linear-gradient(45deg,#ff3366,#9b30ff,#4aa0ff);-webkit-background-clip:text;color:transparent}
 
-  /* Buttons row - YES | NO */
-  #buttonsRow{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:18px;position:relative;z-index:40}
-  button{border:0;border-radius:12px;padding:12px 22px;font-size:16px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-  #yesBtn{background:var(--btn-yes);color:#fff;width:110px;height:44px}
-  #noBtn{background:var(--btn-no);color:#fff;width:110px;height:44px;position:absolute; /* we control coords in JS */ z-index:30}
-  #changeNameBtn{background:var(--btn-change);color:#fff;margin-top:86px;padding:12px 20px;border-radius:12px;font-size:16px;z-index:40;border:0}
+#buttonsRow{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:18px;position:relative;width:100%;max-width:420px;padding:0 14px;box-sizing:border-box}
+.btn{border:0;border-radius:10px;padding:12px 18px;font-size:16px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.08);width:120px;height:46px;display:flex;align-items:center;justify-content:center}
+#yesBtn{background:var(--btn-yes);color:#fff;z-index:40}
+#noBtn{background:var(--btn-no);color:#fff;position:absolute;z-index:30;border-radius:10px;width:120px;height:46px}
+#changeNameBtn{background:var(--btn-change);color:#fff;margin-top:74px;padding:12px 20px;border-radius:10px;font-size:16px;z-index:40;border:0}
 
-  /* Footer centered bottom */
-  #footer{position:absolute;bottom:14px;width:100%;text-align:center;color:var(--footer);font-weight:700;font-size:15px;z-index:50}
+#footer{position:absolute;bottom:14px;width:100%;text-align:center;color:var(--footer);font-weight:700;font-size:15px;z-index:50}
+#footer a{color:#ff2f6d;font-weight:900;text-decoration:none;transition:0.2s}
+#footer a:hover{color:#9b30ff}
 
-  /* FALLING FLOWERS */
-  .flower{position:fixed;top:-60px;pointer-events:none;font-size:20px;opacity:0.95;will-change:transform;z-index:5}
-  @keyframes fall {
-    to{transform:translateY(120vh) rotate(360deg);opacity:0.9}
-  }
+/* Result area & kiss animation */
+.resultWrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;position:relative}
+.kissStage{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;position:relative}
+.face{width:88px;height:88px;border-radius:50%;background:#ffd6e0;border:3px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;position:relative;transition:transform 0.6s ease}
+.eye{width:10px;height:10px;border-radius:50%;background:#333;position:absolute;top:32%;left:28%}
+.eye.right{left:auto;right:28%}
+.mouth{width:28px;height:14px;border-radius:0 0 20px 20px;background:#b43456;position:absolute;bottom:18px;transform-origin:center;transition:transform 0.3s ease}
+#kissHeart{width:28px;height:28px;background:#ff4d7a;border-radius:50%;margin:16px auto 0;transform:scale(0);opacity:0;transition:transform .35s ease,opacity .35s ease;box-shadow:0 4px 10px rgba(255,0,100,0.2)}
 
-  /* FLOATING/BLINKING HEARTS */
-  .heart{position:fixed;pointer-events:none;font-size:18px;opacity:0.95;z-index:8;animation:heartFloat 2s linear infinite alternate}
-  @keyframes heartFloat{
-    from{transform:translateY(0) scale(1)}
-    to{transform:translateY(-18px) scale(1.15)}
-  }
-
-  /* YES result area + kiss animation */
-  .resultWrap{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
-  .kissStage{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
-  .face{
-    width:98px;height:98px;border-radius:50%;background:#ffd6e0;border:3px solid rgba(0,0,0,0.06);position:relative;display:flex;align-items:center;justify-content:center;
-    transform:translateX(0);
-    transition:transform 600ms ease;
-  }
-  .eye{width:10px;height:10px;border-radius:50%;background:#333;position:absolute;top:36%;left:30%}
-  .eye.right{left:auto;right:30%}
-  .mouth{width:28px;height:14px;border-radius:0 0 20px 20px;background:#b43456;position:absolute;bottom:18px;transform-origin:center;transition:transform 300ms ease}
-  .kissHeart{width:26px;height:26px;background:#ff4d7a;border-radius:8px;transform:scale(0);opacity:0;transition:transform 350ms ease,opacity 350ms ease;box-shadow:0 6px 12px rgba(200,50,100,0.2)}
-
-  .face-left{transform:translateX(-6px)}
-  .face-right{transform:translateX(6px)}
-
-  /* When anim class added */
-  .animate-left{transform:translateX(-34px)}
-  .animate-right{transform:translateX(34px)}
-  .mouth-pucker{transform:scaleY(0.45) translateY(2px)}
-  .heart-show{transform:scale(1);opacity:1}
-
-  /* small responsive tuning */
-  @media (min-width:520px){
-    h1{font-size:22px}
-    #name{font-size:34px}
-  }
-  @media (max-width:360px){
-    #name{font-size:22px}
-    #yesBtn,#noBtn{width:90px;height:42px;font-size:15px}
-    .face{width:84px;height:84px}
-  }
+/* Floating objects */
+.floating{position:absolute;pointer-events:none;z-index:0;will-change:transform;opacity:0.9;user-select:none}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1 id="titleTop">WILL YOU BE MY VALENTINE</h1>
-    <h1 id="name">FATIMA</h1>
+<div class="wrap" id="mainWrap">
+  <h2 id="titleTop">WILL YOU BE MY VALENTINE</h2>
+  <h1 id="name">FATIMA</h1>
 
-    <!-- Buttons row contains a placeholder so YES button's position is static; NO is absolute and moved by JS -->
-    <div id="buttonsRow">
-      <button id="yesBtn" type="button">YES</button>
-      <!-- NO will be positioned via JS; keep a placeholder empty element to reserve space so layout doesn't jump -->
-      <div style="width:110px;height:44px;"></div>
-    </div>
-
-    <!-- NO button placed independently so it can move but we keep initial coords next to YES -->
-    <button id="noBtn" type="button" aria-label="No">NO</button>
-
-    <button id="changeNameBtn" type="button">CHANGE NAME</button>
-
-    <div id="footer">Created by Gulraiz</div>
+  <div id="buttonsRow">
+    <button id="yesBtn" class="btn">YES</button>
+    <div style="width:120px;height:46px;"></div>
   </div>
 
-  <!-- Placeholder for result (cartoons + message) -->
-  <div id="resultContainer" style="display:none"></div>
+  <button id="noBtn" class="btn">NO</button>
+  <button id="changeNameBtn">CHANGE NAME</button>
+
+  <div id="footer">Created by <a href="https://www.instagram.com/_simple_sa_larka_?igsh=MWRlMHU5M3V1dHVreA==" target="_blank" rel="noopener noreferrer">Gulraiz</a></div>
+</div>
+
+<div id="resultContainer" class="resultWrap" style="display:none"></div>
 
 <script>
-/* ========= Falling flowers (emoji) ========= */
-const flowerEmojis = ["🌸","🌺","🌼","💮","🌹","🌷"];
-function spawnFlower(){
-  const f = document.createElement('div');
-  f.className = 'flower';
-  f.textContent = flowerEmojis[Math.floor(Math.random()*flowerEmojis.length)];
-  const size = 14 + Math.random()*28;
-  f.style.fontSize = size + 'px';
-  const left = Math.random()*(window.innerWidth - 40);
-  f.style.left = left + 'px';
-  const dur = 6 + Math.random()*6;
-  f.style.animationDuration = dur + 's';
-  f.style.opacity = (0.7 + Math.random()*0.3);
-  document.body.appendChild(f);
-  // remove after animation ends
-  setTimeout(()=>{ f.remove(); }, (dur*1000)+400);
+const yesBtn=document.getElementById('yesBtn');
+const noBtn=document.getElementById('noBtn');
+const changeBtn=document.getElementById('changeNameBtn');
+const nameSpan=document.getElementById('name');
+const titleTop=document.getElementById('titleTop');
+const footer=document.getElementById('footer');
+const resultContainer=document.getElementById('resultContainer');
+
+let noTexts=["THINK AGAIN","ARE YOU SURE","THINK CAREFULL","DON'T BE SHY","LAST CHANCE HAI","YES"];
+let noIndex=0;
+
+/* floating background objects */
+function createFloating(type,count){
+  for(let i=0;i<count;i++){
+    const el=document.createElement('div');
+    el.classList.add('floating');
+    if(type==='flower'){
+      el.innerHTML='🌸';
+    }else if(type==='heart'){
+      el.innerHTML='❤️';
+    }else if(type==='snow'){
+      el.innerHTML='❄️';
+    }
+    el.style.left=Math.random()*100+'vw';
+    el.style.top=Math.random()*100+'vh';
+    el.style.fontSize=(Math.random()*14+10)+'px';
+    document.body.appendChild(el);
+    animateFloating(el,type);
+  }
 }
-setInterval(spawnFlower, 350); // frequent enough for live feel
-
-/* ========= Floating/blinking hearts ========= */
-const heartEmojis = ["💖","💗","❤️","💘"];
-function spawnHeart(){
-  const h = document.createElement('div');
-  h.className = 'heart';
-  h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
-  const left = Math.random()*(window.innerWidth - 40);
-  const top = Math.random()*(window.innerHeight * 0.7);
-  h.style.left = left + 'px';
-  h.style.top = top + 'px';
-  h.style.opacity = (0.6 + Math.random()*0.4);
-  h.style.fontSize = (12 + Math.random()*18) + 'px';
-  document.body.appendChild(h);
-  setTimeout(()=>{ h.remove(); }, 1200);
+function animateFloating(el,type){
+  let dx=(Math.random()*2-1)*0.2;
+  let dy=type==='heart'?-0.3:0.3;
+  function move(){
+    let left=parseFloat(el.style.left);
+    let top=parseFloat(el.style.top);
+    left+=dx; top+=dy;
+    if(left>100) left=0; if(left<0) left=100;
+    if(top>100) top=0; if(top<0) top=100;
+    el.style.left=left+'vw';
+    el.style.top=top+'vh';
+    requestAnimationFrame(move);
+  }
+  move();
 }
-setInterval(spawnHeart, 600);
 
-/* ========= Core interactive logic ========= */
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const changeBtn = document.getElementById('changeNameBtn');
-const footer = document.getElementById('footer');
-const nameSpan = document.getElementById('name');
-const titleTop = document.getElementById('titleTop');
-const resultContainer = document.getElementById('resultContainer');
-
-let noTexts = ["THINK AGAIN","ARE YOU SURE","THINK CAREFULL","DON'T BE SHY","LAST CHANCE HAI","YES"];
-let noIndex = 0;
-
-/* Helper: get list of exclusion rectangles (YES, CHANGE NAME, TITLE, FOOTER) */
-function getExclusions(){
-  const rects = [];
-  const yesRect = yesBtn.getBoundingClientRect();
-  rects.push(yesRect);
-
-  const changeRect = changeBtn.getBoundingClientRect();
-  rects.push(changeRect);
-
-  const titleRect = titleTop.getBoundingClientRect();
-  rects.push(titleRect);
-
-  const footerRect = footer.getBoundingClientRect();
-  rects.push(footerRect);
-
+/* NO button helpers */
+function getExclusions(pad=8){
+  const rects=[];
+  [yesBtn,changeBtn,titleTop,footer].forEach(el=>{if(!el)return; const r=el.getBoundingClientRect(); rects.push({left:r.left-pad,top:r.top-pad,right:r.right+pad,bottom:r.bottom+pad})});
+  rects.push({left:0,top:0,right:window.innerWidth,bottom:30});
+  rects.push({left:0,top:window.innerHeight-80,right:window.innerWidth,bottom:window.innerHeight});
   return rects;
 }
-
-/* Helper: check if candidate x,y,w,h overlaps any rect in array */
-function overlaps(x,y,w,h,rects){
-  for(const r of rects){
-    if( (x + w) > r.left && x < r.right && (y + h) > r.top && y < r.bottom ){
-      return true;
-    }
-  }
-  return false;
-}
-
-/* Place NO button initially right beside YES (calculated) */
+function overlapsRect(x,y,w,h,rects){for(const r of rects){if((x+w)>r.left && x<r.right && (y+h)>r.top && y<r.bottom)return true}return false}
 function placeNoInitial(){
-  // Place to the right of YES if space, otherwise left
-  const yesRect = yesBtn.getBoundingClientRect();
-  const btnW = noBtn.offsetWidth;
-  const btnH = noBtn.offsetHeight;
-  const spacing = 14;
-  let x = yesRect.right + spacing;
-  let y = yesRect.top;
-
-  if(x + btnW > window.innerWidth - 6){
-    // not enough space right, place left
-    x = yesRect.left - spacing - btnW;
-    if(x < 6) x = (window.innerWidth - btnW) / 2; // fallback center
-  }
-
-  // ensure not overlapping footer (unlikely) and within viewport
-  if(y + btnH > window.innerHeight - 80) y = window.innerHeight - btnH - 80;
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
+  const yesRect=yesBtn.getBoundingClientRect();
+  const btnW=noBtn.offsetWidth;
+  const btnH=noBtn.offsetHeight;
+  let x=yesRect.right+12;
+  let y=yesRect.top+(yesRect.height-btnH)/2;
+  if(x+btnW>window.innerWidth-6)x=yesRect.left-12-btnW;
+  if(x<6)x=(window.innerWidth-btnW)/2;
+  if(y+btnH>window.innerHeight-80)y=window.innerHeight-btnH-80;
+  noBtn.style.left=x+'px';
+  noBtn.style.top=y+'px';
 }
-
-/* Move NO to random empty space excluding exclusions */
 function moveNo(){
-  const btnW = noBtn.offsetWidth;
-  const btnH = noBtn.offsetHeight;
-  const exclusions = getExclusions();
-
-  let attempts = 0;
-  let x=0,y=0;
-  while(attempts < 150){
-    x = Math.random()*(window.innerWidth - btnW - 8) + 4;
-    y = Math.random()*(window.innerHeight - btnH - 80) + 30; // keep some top margin
-    if(!overlaps(x,y,btnW,btnH,exclusions)) break;
+  const btnW=noBtn.offsetWidth,btnH=noBtn.offsetHeight;
+  const rects=getExclusions(10);
+  let x=0,y=0,attempts=0;
+  while(attempts<200){
+    x=Math.random()*(window.innerWidth-btnW-12)+6;
+    y=Math.random()*(window.innerHeight-btnH-120)+36;
+    if(!overlapsRect(x,y,btnW,btnH,rects))break;
     attempts++;
   }
-  // apply position
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-
-  // update text sequence
-  noBtn.innerText = noTexts[noIndex];
-  noIndex = Math.min(noIndex + 1, noTexts.length - 1);
-
-  // If the button text becomes YES (final), leave behavior: clicking it triggers yesClicked
-  if(noBtn.innerText.toUpperCase() === "YES"){
-    // optional: visually mark it
-    noBtn.style.background = "#ff7aa0";
-  }
+  noBtn.style.left=Math.max(6,Math.min(x,window.innerWidth-btnW-6))+'px';
+  noBtn.style.top=Math.max(36,Math.min(y,window.innerHeight-btnH-80))+'px';
+  noBtn.innerText=noTexts[noIndex]||noTexts[noTexts.length-1];
+  noIndex=Math.min(noIndex+1,noTexts.length-1);
+  if(noBtn.innerText.trim().toUpperCase()==='YES')noBtn.style.background='#ff7aa0'; else noBtn.style.background='var(--btn-no)';
 }
 
-/* YES click -> show kiss animation + message */
+/* YES click */
 function yesClicked(){
-  // hide main UI visually
-  document.querySelector('.wrap').style.display = 'none';
-  resultContainer.style.display = 'flex';
-  resultContainer.className = 'resultWrap';
-  resultContainer.innerHTML = `
-    <div style="margin-top:36px">
-      <h1 style="color:${getComputedStyle(document.documentElement).getPropertyValue('--accent')};font-size:20px;margin:0">I KNEW YOU WANTED THIS ❤️</h1>
-      <div class="kissStage" id="kissStage">
-        <div class="face face-left" id="faceL"><div class="eye"></div><div class="eye right"></div><div class="mouth" id="mouthL"></div></div>
-        <div class="face face-right" id="faceR"><div class="eye"></div><div class="eye right"></div><div class="mouth" id="mouthR"></div></div>
+  document.getElementById('mainWrap').style.display='none';
+  resultContainer.style.display='flex';
+  resultContainer.innerHTML=`
+    <div style="margin:auto;text-align:center;padding-top:60px">
+      <h2 style="color:var(--accent);font-size:20px;margin:0 10px 14px 10px">I KNEW YOU WANTED THIS ❤️</h2>
+      <div class="kissStage">
+        <div class="face" style="transform:translateX(-6px)">
+          <div class="eye"></div>
+          <div class="eye right"></div>
+          <div class="mouth"></div>
+        </div>
+        <div class="face" style="transform:translateX(6px)">
+          <div class="eye"></div>
+          <div class="eye right"></div>
+          <div class="mouth"></div>
+        </div>
       </div>
-      <div style="height:18px"></div>
-      <div id="kissHeart" class="kissHeart" style="margin:auto"></div>
+      <div id="kissHeart"></div>
+      <div style="height:24px"></div>
+      <div style="text-align:center;margin-bottom:30px;color:var(--footer);font-weight:700">Created by <a href="https://www.instagram.com/_simple_sa_larka_?igsh=MWRlMHU5M3V1dHVreA==" target="_blank" rel="noopener noreferrer">Gulraiz</a></div>
     </div>
-    <div style="margin-top:18px"><div id="footerAfter" style="color:var(--footer);font-weight:700">Created by Gulraiz</div></div>
   `;
-
-  // animate faces approach and kiss
-  const faceL = document.getElementById('faceL');
-  const faceR = document.getElementById('faceR');
-  const mouthL = document.getElementById('mouthL');
-  const mouthR = document.getElementById('mouthR');
-  const heart = document.getElementById('kissHeart');
-
-  // step 1: faces move toward each other
-  setTimeout(()=>{ faceL.classList.add('animate-left'); faceR.classList.add('animate-right'); }, 200);
-
-  // step 2: pucker mouth
-  setTimeout(()=>{ mouthL.classList.add('mouth-pucker'); mouthR.classList.add('mouth-pucker'); }, 800);
-
-  // step 3: show heart
-  setTimeout(()=>{ heart.classList.add('heart-show'); }, 1150);
-
-  // step 4: small scale pop
-  setTimeout(()=>{ heart.style.transform = 'scale(1.12)'; }, 1500);
-  setTimeout(()=>{ heart.style.transform = 'scale(1)'; }, 1750);
+  const faces=resultContainer.querySelectorAll('.face');
+  const heart=document.getElementById('kissHeart');
+  setTimeout(()=>{faces[0].style.transform='translateX(-36px)';faces[1].style.transform='translateX(36px)';},250);
+  setTimeout(()=>{heart.style.transform='scale(1)';heart.style.opacity='1';},900);
 }
 
-/* Change name prompt */
+/* Change name */
 function changeName(){
-  const val = prompt("Enter your Valentine's name:");
-  if(val && val.trim() !== ""){
-    nameSpan.textContent = val.trim().toUpperCase();
-  }
+  const val=prompt("Enter your Valentine's name:");
+  if(val && val.trim()!=="") nameSpan.textContent=val.trim().toUpperCase();
 }
 
-/* Event binding */
-yesBtn.addEventListener('click', yesClicked);
-noBtn.addEventListener('click', () => {
-  // if NO button already reads YES, treat as YES
-  if(noBtn.innerText.trim().toUpperCase() === 'YES'){
-    yesClicked();
-  } else {
-    moveNo();
-  }
+/* Events */
+yesBtn.addEventListener('click',yesClicked);
+changeBtn.addEventListener('click',changeName);
+noBtn.addEventListener('click',()=>{if(noBtn.innerText.trim().toUpperCase()==='YES') return yesClicked(); moveNo();});
+noBtn.addEventListener('touchstart',(e)=>{e.preventDefault(); if(noBtn.innerText.trim().toUpperCase()==='YES') return yesClicked(); moveNo();});
+
+/* init */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{placeNoInitial();},50);
+  createFloating('flower',18);
+  createFloating('heart',12);
+  createFloating('snow',15);
 });
-changeBtn.addEventListener('click', changeName);
-
-/* Place NO initially after fonts/layout ready */
-window.addEventListener('load', () => {
-  // ensure NO dimensions measured
-  placeNoInitial();
-});
-
-/* reposition NO initial placement on resize */
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(()=>{ placeNoInitial(); }, 120);
-});
-
-/* Accessibility: make Enter key on YES trigger yesClicked when focus is on yes button */
-yesBtn.addEventListener('keyup', (e)=>{ if(e.key === 'Enter') yesClicked(); });
-noBtn.addEventListener('keyup', (e)=>{ if(e.key === 'Enter') moveNo(); });
-
+window.addEventListener('resize',()=>{ setTimeout(()=>{placeNoInitial();},140); });
 </script>
 </body>
 </html>
