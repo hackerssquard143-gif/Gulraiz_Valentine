@@ -12,12 +12,13 @@ body{
   height:100vh;
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  justify-content:flex-start;
   align-items:center;
   background:#ffe6ec;
   font-family:Arial, sans-serif;
   overflow:hidden;
   text-align:center;
+  position:relative;
 }
 
 h1{
@@ -39,7 +40,8 @@ button{
   border:none;
   border-radius:12px;
   cursor:pointer;
-  margin:10px 5px 10px 5px;
+  margin:10px 5px;
+  z-index: 1; /* ensure visible */
 }
 
 #buttonsContainer{
@@ -47,6 +49,8 @@ button{
   justify-content:center;
   flex-wrap:wrap;
   margin-top:15px;
+  z-index: 1;
+  position: relative;
 }
 
 #yesBtn{
@@ -58,6 +62,7 @@ button{
   background:#444;
   color:white;
   position:absolute;
+  z-index: 0; /* NO button behind other buttons so visible */
 }
 
 #changeNameBtn{
@@ -82,10 +87,10 @@ button{
 
 <div id="buttonsContainer">
   <button id="yesBtn" onclick="yesClicked()">YES</button>
-  <button id="noBtn" onclick="moveNo()">NO</button>
+  <button id="changeNameBtn" onclick="changeName()">Change Name</button>
 </div>
 
-<button id="changeNameBtn" onclick="changeName()">Change Name</button>
+<button id="noBtn" onclick="moveNo()">NO</button>
 
 <div id="footer">Created by Gulraiz</div>
 
@@ -101,19 +106,55 @@ let texts = [
 
 let index = 0;
 
-// NO button random move & text change
 function moveNo(){
   const btn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const changeBtn = document.getElementById("changeNameBtn");
+  const footer = document.getElementById("footer");
 
-  let x = Math.random() * (window.innerWidth - 120);
-  let y = Math.random() * (window.innerHeight - 60);
+  const btnWidth = 100;
+  const btnHeight = 50;
+
+  // Get restricted area
+  const yesRect = yesBtn.getBoundingClientRect();
+  const changeRect = changeBtn.getBoundingClientRect();
+  const footerRect = footer.getBoundingClientRect();
+
+  let maxAttempts = 100; // avoid infinite loop
+  let x, y;
+  for(let i=0;i<maxAttempts;i++){
+    x = Math.random() * (window.innerWidth - btnWidth);
+    y = Math.random() * (window.innerHeight - btnHeight);
+
+    let overlap = false;
+
+    // Check YES overlap
+    if(x + btnWidth > yesRect.left && x < yesRect.right &&
+       y + btnHeight > yesRect.top && y < yesRect.bottom){
+      overlap = true;
+    }
+
+    // Check CHANGE NAME overlap
+    if(x + btnWidth > changeRect.left && x < changeRect.right &&
+       y + btnHeight > changeRect.top && y < changeRect.bottom){
+      overlap = true;
+    }
+
+    // Check FOOTER overlap
+    if(x + btnWidth > footerRect.left && x < footerRect.right &&
+       y + btnHeight > footerRect.top && y < footerRect.bottom){
+      overlap = true;
+    }
+
+    if(!overlap) break;
+  }
 
   btn.style.left = x + "px";
   btn.style.top = y + "px";
 
+  // Change text sequence
   btn.innerText = texts[index];
   index++;
-
   if(index >= texts.length){
     index = texts.length - 1;
   }
